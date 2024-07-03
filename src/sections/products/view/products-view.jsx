@@ -23,7 +23,7 @@ export default function ProductsView() {
       try {
         let response;
         if (searchQuery) {
-          response = await searchShoe(searchQuery, currentPage, 10);
+          response = await searchShoe(searchQuery, currentPage, 20);
         } else {
           response = await getProducts(currentPage);
         }

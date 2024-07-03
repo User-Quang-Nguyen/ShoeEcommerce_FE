@@ -107,9 +107,9 @@ export async function deleteShoe(shoeid) {
     }
 }
 
-export async function searchShoe(query, page, limit){
+export async function searchShoe(query, page, limit) {
     try {
-        const response = await axios.get(`${API_URL}/shoe`,{
+        const response = await axios.get(`${API_URL}/shoe`, {
             params: { key: query, page, limit }
         });
         return response;

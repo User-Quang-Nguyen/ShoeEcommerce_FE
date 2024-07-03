@@ -80,7 +80,7 @@ export default function Management({ data, count, setCount }) {
       key: 'image',
       render: (text, record) => (
         <img
-          src="assets/images/products/product_3.jpg"
+          src={record.image}
           alt={record.name}
           style={{ width: '50px', height: '50px' }}
         />

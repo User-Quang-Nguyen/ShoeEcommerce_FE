@@ -140,7 +140,7 @@ export default function ProductDetail() {
         <Grid xs={6} md={5}>
           <Item>
             <img
-              src="https://source.unsplash.com/random"
+              src= {infor?.image}
               alt=""
               className="fixed-size-image"/>
           </Item>

@@ -4,7 +4,6 @@ import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import { Form, Input, Modal, Button, Row, Col, Select, Upload, InputNumber } from 'antd';
 const { TextArea } = Input;
-const { Option } = Select;
 
 import { productManagement } from "src/api/products";
 import { getAllBrand } from "src/api/brand";
