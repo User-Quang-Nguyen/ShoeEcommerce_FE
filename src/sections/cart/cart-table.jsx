@@ -12,13 +12,19 @@ export default function CartTable({handleDecrement, handleIncrement, handleDelet
       title: 'Hình ảnh',
       dataIndex: 'image',
       key: 'image',
-      render: (text) => <img
-          src={text}
-          alt="product"
-          style={{
-          width: '50px',
-          height: '50px'
-        }}/>
+      render: (_, record) => {
+        console.log(record);
+        return (
+          <img
+            src={record.image}
+            alt="product"
+            style={{
+            width: '50px',
+            height: '50px'
+            }}
+          />
+        )
+      }
     }, {
       title: 'Mô tả',
       dataIndex: 'description',

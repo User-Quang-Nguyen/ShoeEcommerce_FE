@@ -54,7 +54,7 @@ export default function CartView() {
             id: item.id,
             cartshoeid: item.cartshoeid,
             name: item.name,
-            image: '/assets/images/products/product_2.jpg', // Placeholder image
+            image: item.image, // Placeholder image
             description: item.description,
             price: item.price,
             quantity: item.quantity,
