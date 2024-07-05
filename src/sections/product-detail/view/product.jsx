@@ -149,7 +149,7 @@ export default function ProductDetail() {
           <Grid item xs={12} sm={6}>
             <Item>
               <p>
-                A product from the {infor?.brandname} brand named {infor?.name} is described as {infor?.description}. Carefully selected premium materials provide softness, breathability, ensuring your feet are always pampered and optimally protected. {infor?.name} is not just a pair of shoes, but also a declaration of your personality.
+                Một sản phẩm đến từ thương hiệu {infor?.brandname} có tên {infor?.name} được mọi người tin dùng. Chất liệu cao cấp được lựa chọn kỹ lưỡng mang đến sự mềm mại, thoáng khí, đảm bảo đôi chân bạn luôn được nâng niu và bảo vệ tối ưu. {infor?.name} không chỉ là một đôi giày mà còn là sự khẳng định cá tính của bạn.
               </p>
             </Item>
           </Grid>

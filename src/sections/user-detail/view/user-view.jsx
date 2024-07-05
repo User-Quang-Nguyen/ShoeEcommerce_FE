@@ -83,9 +83,9 @@ export default function UserView() {
       const result = await updateInfor(formData);
       setChange(!change);
       if (result.data.status) {
-        setSnackbar({ open: true, message: "Cập nhật thành công" });
+        setSnackbar({ open: true, message: result.data.message });
       } else {
-        setSnackbar({ open: true, message: "Cập nhật thất bại" });
+        setSnackbar({ open: true, message: result.data.message });
       }
     }
     setIsEditing(!isEditing);
