@@ -134,11 +134,17 @@ export default function CartView() {
 
   const handlerOrder = async () => {
     try {
-      const response = await order();
-      setSnackbarMessage(response.data.message);
-      setSnackbarOpen(true);
-      if (response.data.status === true) {
-        setOpen(open + 1);
+      if(!address) {
+        setSnackbarMessage('Vui lòng nhập địa chỉ');
+        setSnackbarOpen(true);
+        return;
+      }else{
+        const response = await order();
+        setSnackbarMessage(response.data.message);
+        setSnackbarOpen(true);
+        if (response.data.status === true) {
+          setOpen(open + 1);
+        }
       }
     } catch (error) {
       console.error('Failed to place order:', error);

@@ -44,6 +44,7 @@ export default function SignupView() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleNameChange = (event) => {
     setName(event.target.value);
@@ -73,9 +74,11 @@ export default function SignupView() {
             }, 2000);
         }else{
             setSignupError(true);
+            setErrorMessage(result.data.message);
         }
     } catch (error) {
         setSignupError(true);
+        setErrorMessage(error.message);
     }
   };
 
@@ -198,7 +201,7 @@ export default function SignupView() {
             </Typography>
           </Divider>
           {signupError && (
-            <FilledAlerts severity="error" content="Đăng ký thất bại"/>
+            <FilledAlerts severity="error" content={errorMessage}/>
           )}
           {isSignedUp && (
               <FilledAlerts severity="success" content="Đăng ký thành công"/>
