@@ -6,11 +6,12 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import { InputNumber } from "antd";
 
 import {useSearchParams} from "react-router-dom";
 import {productDetail} from "src/api/products";
 import { addToCart } from "src/api/cart";
-import { Snackbar } from "src/components/notification";
+import AutohideNoti from "src/components/notification/autohide";
 
 import 'src/global.css';
 
@@ -20,19 +21,14 @@ export default function ProductDetail() {
   const [searchParams] = useSearchParams();
   const productId = searchParams.get('id');
 
-  const [infor,
-    setInfor] = useState();
-  const [selectedColor,
-    setSelectedColor] = useState('');
-  const [availableSizes,
-    setAvailableSizes] = useState([]);
-  const [selectedSize,
-    setSelectedSize] = useState('');
-  const [quantity,
-    setQuantity] = useState(1);
-  const [showNotification,
-    setShowNotification] = useState(false);
-  const [quan, setQuan] = useState(0);
+  const [infor, setInfor] = useState();
+  const [selectedColor, setSelectedColor] = useState('');
+  const [availableSizes, setAvailableSizes] = useState([]);
+  const [selectedSize, setSelectedSize] = useState('');
+  const [quantity, setQuantity] = useState(1);
+  const [quan, setQuan] = useState();
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async() => {
@@ -53,12 +49,11 @@ export default function ProductDetail() {
     setSelectedSize('');
   };
 
-  const findById = () => {
+  const findById = async () => {
     const detail = infor.detail;
     let prdi = 1;
-    detail?.map((item) => {
+    await detail?.map((item) => {
       if (item.color === selectedColor && item.size === selectedSize) {
-        console.log(item);
         prdi = item.id;
         setQuan(item.quantity);
       }
@@ -66,12 +61,17 @@ export default function ProductDetail() {
     return prdi;
   }
 
-  const handleSizeSelect = (size) => {
+  const handleSizeSelect = async (size) => {
     setSelectedSize(size);
-    findById();
+    await findById();
   };
 
   const addTo_Cart = async () => {
+    if(quantity > quan){
+      setSnackbarMessage("Số lượng phải nhỏ hơn "+quan);
+      setSnackbarOpen(true);
+      return;
+    }
     const prdi = await findById();
     const formData = {
       shoeid: prdi,
@@ -79,11 +79,9 @@ export default function ProductDetail() {
     }
     const result = await addToCart(formData);
     if (result.data.status === true) {
-      setShowNotification(true);
-      setTimeout(() => {
-        setShowNotification(false);
-      }, 2000);
-      }
+      setSnackbarMessage(result.data.message);
+      setSnackbarOpen(true);
+    }
   };
 
   const handleDecreaseQuantity = () => {
@@ -93,14 +91,20 @@ export default function ProductDetail() {
   };
 
   const handleIncreaseQuantity = () => {
-    setQuantity((prevQuantity) => prevQuantity + 1);
+    if(quantity >= quan){
+      setSnackbarMessage("Số lượng phải nhỏ hơn "+quan);
+      setSnackbarOpen(true);
+    }else{
+      setQuantity((prevQuantity) => prevQuantity + 1);
+    }
   };
 
   const handleQuantityChange = (event) => {
     if (event.target.value > 0) {
       setQuantity(event.target.value);
     }else{
-      alert("Quantity must be greater than 0");
+      setSnackbarMessage("Số lượng phải lớn hơn 0");
+      setSnackbarOpen(true);
     }
   };
 
@@ -121,6 +125,10 @@ export default function ProductDetail() {
     margin: '4px'
   });
 
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
+
   return (
     <Container>
       <Typography variant="h4" sx={{
@@ -128,13 +136,6 @@ export default function ProductDetail() {
       }}>
         Chi tiết sản phẩm
       </Typography>
-
-      {showNotification && (
-        <Snackbar
-          message="Thêm giỏ hàng thành công"
-          type="error"
-        />
-      )}
 
       <Grid container spacing={2}>
         <Grid xs={6} md={5}>
@@ -212,7 +213,7 @@ export default function ProductDetail() {
           </Grid>
           <Grid item xs={12} sm={6}>
             <Item>
-              {selectedSize && (
+              {selectedSize && quan != null && (
                 <div>
                   <h3>Số lượng:</h3>
                   <div
@@ -222,6 +223,7 @@ export default function ProductDetail() {
                   }}>
                     <Button onClick={handleDecreaseQuantity} sx={{ fontSize: '1.5rem' }}>-</Button>
                     <TextField
+                      disabled
                       type="number"
                       value={quantity}
                       onChange={handleQuantityChange}
@@ -235,7 +237,7 @@ export default function ProductDetail() {
                       width: '50px',
                     }}/>
                       <Button sx={{ fontSize: '1.5rem' }} onClick={handleIncreaseQuantity}>+</Button>
-                        <p>Số lượng trong kho: {quan}</p>
+                      <p>Số lượng trong kho: {quan}</p>
                   </div>
                   <Button
                     onClick={addTo_Cart}
@@ -247,6 +249,7 @@ export default function ProductDetail() {
           </Grid>
         </Grid>
       </Grid>
+      <AutohideNoti message={snackbarMessage} open={snackbarOpen} onClose={handleCloseSnackbar} />
     </Container>
   )
 }

@@ -4,8 +4,8 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import AutohideNoti from "src/components/notification/autohide";
 import { Row, Col, Button, Card, Avatar, List, Input, Select } from "antd";
-import {getUserInfor} from "src/api/account";
-import {updateInfor} from "src/api/user";
+import { getUserInfor } from "src/api/account";
+import { updateInfor } from "src/api/user";
 
 // ------------------------------------------------------------------------
 
@@ -24,6 +24,7 @@ export default function UserView() {
   const [change, setChange] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,7 +33,7 @@ export default function UserView() {
       setEmail(response.data.email);
       setPhone(response.data.phonenumber);
       setAddress(response.data.address);
-      setGender(response.data.gender === 1 ? 'Nữ' : response.data.gender === 0 ? 'Nam' : 'Khác');
+      setGender(response.data.gender == 1 ? 'Nam' : response.data.gender == 0 ? 'Nữ' : 'Khác');
     };
     fetchData();
   }, [change]);
@@ -128,6 +129,12 @@ export default function UserView() {
 
   const handleSaveInfor = async () => {
     if (isEditing) {
+      if (!name || !email || !phone || !province || !district || !ward) {
+        setError('Vui lòng điền đầy đủ tất cả các trường.');
+        return;
+      } else {
+        setError('');
+      }
       const formData = {
         name,
         email,
@@ -145,7 +152,7 @@ export default function UserView() {
   };
 
   const handleAddress = () => {
-    if(!address) return;
+    if (!address) return;
     const add = address.split(', ');
     setProvince(add[2]);
     setDistrict(add[1]);
@@ -166,17 +173,18 @@ export default function UserView() {
         <Card title="Trang cá nhân" style={{ fontWeight: 'bold' }}>
           <Row>
             <Col span={6}>
-              <Avatar size={128} src="assets/images/avatars/avatar_1.jpg" />
+              <Avatar size={128} src="assets/images/avatars/avatar_2.jpg" />
             </Col>
             <Col span={18}>
               <Button onClick={handleSaveInfor} style={{ marginBottom: '20px' }}>
                 {isEditing ? 'Lưu' : 'Chỉnh sửa'}
               </Button>
+              {error && <Typography color="error">{error}</Typography>}
               <List>
                 <List.Item style={itemStyle}>
                   <span style={labelStyle}>Họ và tên</span>
                   {isEditing ? (
-                    <Input style={inputStyle} type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                    <Input required style={inputStyle} type="text" value={name} onChange={(e) => setName(e.target.value)} />
                   ) : (
                     <span>{name}</span>
                   )}
@@ -194,7 +202,7 @@ export default function UserView() {
                 <List.Item style={itemStyle}>
                   <span style={labelStyle}>Số điện thoại</span>
                   {isEditing ? (
-                    <Input style={inputStyle} type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                    <Input required style={inputStyle} type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
                   ) : (
                     <span>{phone}</span>
                   )}
@@ -204,13 +212,13 @@ export default function UserView() {
                   {isEditing ? (
                     <>
                       <span style={labelStyle}>Tỉnh / Thành phố</span>
-                      <Select name="calc_shipping_provinces" style={inputStyle} value={province} onChange={setProvince}>
-                      <Option value="">Tỉnh / Thành phố</Option>
+                      <Select required name="calc_shipping_provinces" style={inputStyle} value={province} onChange={setProvince}>
+                        <Option value="">Tỉnh / Thành phố</Option>
                         {c.map((province, index) => (
                           <Option key={index} value={province}>
                             {province}
                           </Option>
-                      ))}
+                        ))}
                       </Select>
                     </>
                   ) : (
@@ -223,29 +231,29 @@ export default function UserView() {
                 
                 { isEditing ? (
                   <List.Item style={itemStyle}>
-                  <span style={labelStyle}>Quận/Huyện</span>
-                  <Select name="calc_shipping_district" style={inputStyle} value={district} onChange={setDistrict}>
-                    <Option value="">Quận / Huyện</Option>
-                    {arr[c.indexOf(province)]?.map((district, index) => (
-                      <Option key={index} value={district}>
-                        {district}
-                      </Option>
-                  ))}
-                  </Select>
+                    <span style={labelStyle}>Quận/Huyện</span>
+                    <Select required name="calc_shipping_district" style={inputStyle} value={district} onChange={setDistrict}>
+                      <Option value="">Quận / Huyện</Option>
+                      {arr[c.indexOf(province)]?.map((district, index) => (
+                        <Option key={index} value={district}>
+                          {district}
+                        </Option>
+                      ))}
+                    </Select>
                   </List.Item>
                 ) : null}
 
                 { isEditing ? (
                   <List.Item style={itemStyle}>
-                  <span style={labelStyle}>Xã/Phường</span>
-                  <Input style={inputStyle} type="text" value={ward} onChange={(e) => setWard(e.target.value)} />
+                    <span style={labelStyle}>Xã/Phường</span>
+                    <Input required style={inputStyle} type="text" value={ward} onChange={(e) => setWard(e.target.value)}/>
                   </List.Item>
                 ) : null}
 
                 <List.Item style={itemStyle}>
                   <span style={labelStyle}>Giới tính</span>
                   {isEditing ? (
-                    <Select style={inputStyle} value={gender} onChange={(value) => setGender(value)}>
+                    <Select required style={inputStyle} value={gender} onChange={(value) => setGender(value)}>
                       <Option value={1}>Nam</Option>
                       <Option value={0}>Nữ</Option>
                       <Option value={2}>Khác</Option>
@@ -260,7 +268,7 @@ export default function UserView() {
         </Card>
       </Stack>
 
-      <AutohideNoti message={snackbarMessage} open={snackbarOpen} handleClose={handleCloseSnackbar} />
+      <AutohideNoti message={snackbarMessage} open={snackbarOpen} onClose={handleCloseSnackbar} />
     </Container>
   );
 }
