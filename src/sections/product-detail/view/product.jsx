@@ -92,7 +92,7 @@ export default function ProductDetail() {
 
   const handleIncreaseQuantity = () => {
     if(quantity >= quan){
-      setSnackbarMessage("Số lượng phải nhỏ hơn "+quan);
+      setSnackbarMessage("Số lượng không được lớn hơn "+quan);
       setSnackbarOpen(true);
     }else{
       setQuantity((prevQuantity) => prevQuantity + 1);
