@@ -68,7 +68,7 @@ export default function ProductDetail() {
 
   const addTo_Cart = async () => {
     if(quantity > quan){
-      setSnackbarMessage("Số lượng phải nhỏ hơn "+quan);
+      setSnackbarMessage("Số lượng không được lớn hơn "+quan);
       setSnackbarOpen(true);
       return;
     }
@@ -167,7 +167,8 @@ export default function ProductDetail() {
             </Item>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Item>{infor && (
+            {console.log(infor)}
+            <Item>{infor && infor.detail.length != 0 ? (
                 <div>
                   <h3>Màu:</h3>
                   {infor
@@ -187,7 +188,10 @@ export default function ProductDetail() {
                       </Button>
                     ))}
                 </div>
-              )}
+              ) : (
+                <p style={{ color: 'red' }}>Chưa có sản phẩm cụ thể</p>
+              )
+              }
             </Item>
           </Grid>
           <Grid item xs={12} sm={6}>
