@@ -173,7 +173,7 @@ export default function UserView() {
         <Card title="Trang cá nhân" style={{ fontWeight: 'bold' }}>
           <Row>
             <Col span={6}>
-              <Avatar size={128} src="assets/images/avatars/avatar_2.jpg" />
+              <Avatar size={128} src="assets/images/avatars/avatar_5.jpg" />
             </Col>
             <Col span={18}>
               <Button onClick={handleSaveInfor} style={{ marginBottom: '20px' }}>

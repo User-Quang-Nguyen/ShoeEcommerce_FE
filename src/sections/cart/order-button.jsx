@@ -11,7 +11,7 @@ export default function OrderButton({handlerOrder}) {
             color="primary"
             onClick={handlerOrder}
         >
-            Place order
+            Đặt hàng
         </Button>
     );
 }

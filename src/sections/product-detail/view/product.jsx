@@ -67,6 +67,11 @@ export default function ProductDetail() {
   };
 
   const addTo_Cart = async () => {
+    if(quan == 0){
+      setSnackbarMessage("Xin lỗi này sản phẩm đã hết hàng");
+      setSnackbarOpen(true);
+      return;
+    }
     if(quantity > quan){
       setSnackbarMessage("Số lượng không được lớn hơn "+quan);
       setSnackbarOpen(true);
@@ -91,7 +96,12 @@ export default function ProductDetail() {
   };
 
   const handleIncreaseQuantity = () => {
-    if(quantity >= quan){
+    if(quan == 0){
+      setSnackbarMessage("Xin lỗi sản phẩm đã hết hàng");
+      setSnackbarOpen(true);
+      return;
+    }
+    if(quantity >= quan ){
       setSnackbarMessage("Số lượng không được lớn hơn "+quan);
       setSnackbarOpen(true);
     }else{
@@ -156,13 +166,13 @@ export default function ProductDetail() {
           </Grid>
           <Grid item xs={12} sm={6}>
             <Item>
-              Thể loại: {infor
+              <h3>Thể loại:</h3> {infor
                 ?.category.join(', ')}
             </Item>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Item>
-              Giá: {infor
+              <h3>Giá:</h3> {infor
                 ?.price} $
             </Item>
           </Grid>
