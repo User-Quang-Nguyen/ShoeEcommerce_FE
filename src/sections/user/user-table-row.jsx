@@ -52,8 +52,7 @@ export default function UserTableRow({
   return (
     <>
       <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
-        <TableCell padding="checkbox">
-          <Checkbox disableRipple checked={selected} onChange={handleClick} />
+        <TableCell padding="normal">
         </TableCell>
 
         <TableCell component="th" scope="row" padding="none">

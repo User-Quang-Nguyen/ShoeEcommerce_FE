@@ -11,6 +11,8 @@ import { getUserInfor } from 'src/api/account';
 import '../cartview.css';
 import AutohideNoti from 'src/components/notification/autohide';
 
+// ------------------------------------------------------------------------
+
 export default function CartView() {
   const [data, setData] = useState([]);
   const [address, setAddress] = useState('');

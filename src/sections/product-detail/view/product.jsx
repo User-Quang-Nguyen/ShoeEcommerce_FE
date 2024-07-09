@@ -6,7 +6,6 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { InputNumber } from "antd";
 
 import {useSearchParams} from "react-router-dom";
 import {productDetail} from "src/api/products";
